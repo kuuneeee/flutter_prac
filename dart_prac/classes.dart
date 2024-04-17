@@ -386,8 +386,6 @@
 
 // 5-9. Mixins
 // 생성자가 없는 클래스
-import 'dart:collection';
-
 mixin class Strong {
   // 버전이 바뀌면서 mixin, mixin class로 사용해야 함
   final double strenghtLevel = 1500.99;
