@@ -388,7 +388,8 @@
 // 생성자가 없는 클래스
 mixin class Strong {
   // 버전이 바뀌면서 mixin, mixin class로 사용해야 함
-  final double strenghtLevel = 1500.99;
+  // final double strenghtLevel = 1500.99;
+  double strenghtLevel = 1500.99;
 }
 
 mixin QuickRunner {
@@ -435,6 +436,7 @@ void main() {
     name: 'kuuneeee',
   );
   var kid = Kid();
+  var horse = Horse();
 
   player.sayHello();
   print(player.strenghtLevel); // print는 두 가지를 가져오지 못하나??
@@ -444,6 +446,13 @@ void main() {
 
   print('Kid...');
   kid.runQuick(); // 메서드는 () 없으면 메서드 자체로 호출됨 -> 파이썬과 같음
+
+  // 같은 mixin을 사용해도 초기화해서 따로 사용할 수 있음 -> property를 가져와서 클래스의 property로 하는거니까
+  player.strenghtLevel = 0;
+  print(player.strenghtLevel);
+
+  horse.strenghtLevel = 10;
+  print(horse.strenghtLevel);
 }
 // 상속은 extend를 사용 -> A extends B : A는 자식 클래스, B는 부모 클래스 -> A는 B의 인스턴스가 됨
 // Mixin은 with으로 사용 -> 부모자식 클래스가 되는게 아니라 다른 클래스의 property나 메서드를 가져오는 것
