@@ -1,4 +1,8 @@
+import 'dart:ui';
+
 import 'package:flutter/material.dart';
+import 'package:flutter/rendering.dart';
+import 'package:flutter/widgets.dart';
 
 void main() {
   runApp(App());
@@ -37,8 +41,15 @@ class App extends StatelessWidget {
 
       home: Scaffold(
         appBar: AppBar(
-          // Title 달수 있는 Widget
-          title: Text("Hello Flutter!!"),
+          title: Text("Hello Flutter!!"), // Title 달수 있는 Widget
+          centerTitle: true, // Title 가운데로
+          // elevation: 10, // Title영역 그림자??
+          backgroundColor: Colors.black87,
+          titleTextStyle: TextStyle(
+            color: Colors.white,
+            fontSize: 27,
+            fontWeight: FontWeight.bold,
+          ),
         ),
         body: Center(
           // child를 화면 가운데에 배치하는 Widget
