@@ -1,11 +1,13 @@
 import 'dart:ui';
 
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/painting.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter/widgets.dart';
 
 void main() {
-  runApp(App());
+  runApp(const App());
 }
 
 // flutter는 수많은 Widget으로 구성되어 있음
@@ -18,42 +20,122 @@ void main() {
 // 가장 기초적이고 쉬운 건 StatelessWidget
 
 class App extends StatelessWidget {
-  // 이렇게 하면 App은 Widget이 됨
-  // 하지만 build 메서드를 만들지 않아서 App에 에러가 발생 -> StatelessWidget을 extend해서 사용하려면 build 메서드를 구현해야 한다는 것
+  const App({super.key});
 
-  // build 메서드
-  // build 메서드는 뭘 return하던지 화면에 보여주는 메서드임 -> Widget의 UI를 만드는 거
-  // 밑의 @overide는 부모 클래스(StatelessWidget)의 build 메서드를 overide한다는 거
   @override
   Widget build(BuildContext context) {
-    // build는 Widget을 return해줘야 함 -> 어떤 Widget?? => 구글 : material / 애플 : cupertino
-    // App Widget은 runApp 함수에 전달되는 Widget -> 즉, 모든 작업의 root가 되는 Widget이라는 것
-    // material과 cupertino는 각각 구글과 애플의 디자인 시스템
-    // MaterialApp, CupertinoApp 중 하나를 return하는 데, 이건 우리가 어떤 family 스타일을 사용할지를 flutter한테 말해주는 거 -> 어떤 스타일로 보여지게 할건지
-
     return MaterialApp(
-      // // home
-      // home: Text("Hello World!!"), // home 화면에 어떤걸 띄울지
-
-      // // 단순히 이렇게만 하면 겁나 이상하게 나올 거
-      // // flutter의 scaffold를 고려하지 않아서임 -> scaffold는 공사장에서 사용하는 겹겹이 쌓인 발판(비계) 같은 거 => 즉, 화면 구조가 층층이 구성된다는 거
-      // // 모바일 앱의 모든 화면은 scaffold가 필요함 -> navigation bar, bottom tab bar, 상단 버튼, 화면 중앙 정렬 등등
-
       home: Scaffold(
-        appBar: AppBar(
-          title: Text("Hello Flutter!!"), // Title 달수 있는 Widget
-          centerTitle: true, // Title 가운데로
-          // elevation: 10, // Title영역 그림자??
-          backgroundColor: Colors.black87,
-          titleTextStyle: TextStyle(
-            color: Colors.white,
-            fontSize: 27,
-            fontWeight: FontWeight.bold,
+        backgroundColor: const Color(0xFF181818),
+        // 배경색 -> 0xFF 쓰고 컬러코드 or Color.fromARGB(Bright, R,G,B), Color.fromRGBO(R,G,B,Opacity)
+        body: Padding(
+          // 화면 테두리 부분에 padding
+          padding: const EdgeInsets.symmetric(horizontal: 40),
+          // all은 상하좌우 모두에 패딩을 주는 거 / only는 상하좌우 선택한데만 패딩 주는거 / symmetric은 상하 또는 좌우에 동시에 패딩 주는거
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            // Column은 children이라는 List<Widget>를 받음(child가 아니라) -> Column 방향 배열, Row 방향 배열 배치를 위함
+            children: [
+              const SizedBox(
+                height: 80,
+              ),
+              Row(
+                // 첫번째 Row
+                mainAxisAlignment: MainAxisAlignment.end,
+                // Row에서의 mainAxis는 수직방향에서의 정렬 -> start는 왼쪽 끝, end는 오른쪽 끝
+                children: [
+                  // Row도 children을 가짐
+                  Column(
+                    crossAxisAlignment: CrossAxisAlignment.end,
+                    // Column에서의 crossAxis는 수직방향에서의 정렬 = Row에서의 mainAxis -> 반대개념
+                    children: [
+                      const Text(
+                        "Hey, Selena",
+                        style: TextStyle(
+                          color: Colors.white,
+                          fontSize: 28,
+                          fontWeight: FontWeight.w800,
+                        ),
+                      ),
+                      Text(
+                        "Welcome back",
+                        style: TextStyle(
+                          color: Colors.white.withOpacity(0.8),
+                          fontSize: 18,
+                        ),
+                      ),
+                    ],
+                  )
+                ],
+              ),
+              const SizedBox(
+                height: 120,
+              ),
+              Text(
+                "Total Balance",
+                style: TextStyle(
+                  fontSize: 22,
+                  color: Colors.white.withOpacity(0.8),
+                ),
+              ),
+              const SizedBox(
+                height: 5,
+              ),
+              const Text(
+                "\$5 194 482",
+                style: TextStyle(
+                  fontSize: 48,
+                  fontWeight: FontWeight.w600,
+                  color: Colors.white,
+                ),
+              ),
+              const SizedBox(
+                height: 30,
+              ),
+              Row(
+                children: [
+                  Container(
+                    // HTML의 div 같은 거 -> child를 가지고 있는 단순한 box
+                    decoration: BoxDecoration(
+                      color: const Color(0xFFF2B33A),
+                      borderRadius: BorderRadius.circular(45),
+                    ),
+                    child: const Padding(
+                      padding: EdgeInsets.symmetric(
+                        vertical: 20,
+                        horizontal: 50,
+                      ),
+                      child: Text(
+                        "Transfer",
+                        style: TextStyle(
+                          // color: Colors.white,
+                          fontSize: 20,
+                        ),
+                      ),
+                    ),
+                  ),
+                  Container(
+                    decoration: BoxDecoration(
+                      color: Colors.grey,
+                      borderRadius: BorderRadius.circular(45),
+                    ),
+                    child: const Padding(
+                      padding: EdgeInsets.symmetric(
+                        vertical: 20,
+                        horizontal: 50,
+                      ),
+                      child: Text(
+                        'what?',
+                        style: TextStyle(
+                          fontSize: 20,
+                        ),
+                      ),
+                    ),
+                  ),
+                ],
+              )
+            ],
           ),
-        ),
-        body: Center(
-          // child를 화면 가운데에 배치하는 Widget
-          child: Text("Hello World!!"),
         ),
       ),
     );
