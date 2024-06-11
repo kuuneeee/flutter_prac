@@ -6,6 +6,7 @@ import 'package:flutter/painting.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter/widgets.dart';
 import 'package:fluttoon/widgets/button.dart';
+import 'package:fluttoon/widgets/currency_card.dart';
 
 void main() {
   runApp(const App());
@@ -29,183 +30,144 @@ class App extends StatelessWidget {
       home: Scaffold(
         backgroundColor: const Color(0xFF181818),
         // 배경색 -> 0xFF 쓰고 컬러코드 or Color.fromARGB(Bright, R,G,B), Color.fromRGBO(R,G,B,Opacity)
-        body: Padding(
-          // 화면 테두리 부분에 padding
-          padding: const EdgeInsets.symmetric(
-            horizontal: 20,
-          ),
-          // all은 상하좌우 모두에 패딩을 주는 거 / only는 상하좌우 선택한데만 패딩 주는거 / symmetric은 상하 또는 좌우에 동시에 패딩 주는거
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            // Column은 children이라는 List<Widget>를 받음(child가 아니라) -> Column 방향 배열, Row 방향 배열 배치를 위함
-            children: [
-              const SizedBox(
-                height: 80,
-              ),
-              Row(
-                // 첫번째 Row
-                mainAxisAlignment: MainAxisAlignment.end,
-                // Row에서의 mainAxis는 수직방향에서의 정렬 -> start는 왼쪽 끝, end는 오른쪽 끝
-                children: [
-                  // Row도 children을 가짐
-                  Column(
-                    crossAxisAlignment: CrossAxisAlignment.end,
-                    // Column에서의 crossAxis는 수직방향에서의 정렬 = Row에서의 mainAxis -> 반대개념
-                    children: [
-                      const Text(
-                        "Hey, Selena",
-                        style: TextStyle(
-                          color: Colors.white,
-                          fontSize: 28,
-                          fontWeight: FontWeight.w800,
-                        ),
-                      ),
-                      Text(
-                        "Welcome back",
-                        style: TextStyle(
-                          color: Colors.white.withOpacity(0.8),
-                          fontSize: 18,
-                        ),
-                      ),
-                    ],
-                  )
-                ],
-              ),
-              const SizedBox(
-                height: 120,
-              ),
-              Text(
-                "Total Balance",
-                style: TextStyle(
-                  fontSize: 22,
-                  color: Colors.white.withOpacity(0.8),
+        body: SingleChildScrollView(
+          child: Padding(
+            // 화면 테두리 부분에 padding
+            padding: const EdgeInsets.symmetric(
+              horizontal: 20,
+            ),
+            // all은 상하좌우 모두에 패딩을 주는 거 / only는 상하좌우 선택한데만 패딩 주는거 / symmetric은 상하 또는 좌우에 동시에 패딩 주는거
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              // Column은 children이라는 List<Widget>를 받음(child가 아니라) -> Column 방향 배열, Row 방향 배열 배치를 위함
+              children: [
+                const SizedBox(
+                  height: 80,
                 ),
-              ),
-              const SizedBox(
-                height: 5,
-              ),
-              const Text(
-                "\$5 194 482",
-                style: TextStyle(
-                  fontSize: 48,
-                  fontWeight: FontWeight.w600,
-                  color: Colors.white,
-                ),
-              ),
-              const SizedBox(
-                height: 30,
-              ),
-              const Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Button(
-                      text: "Transfer",
-                      bgColor: Color(0xFFF2B33A),
-                      textColor: Colors.black),
-                  Button(
-                    text: "Request",
-                    bgColor: Color(0xFF1F2123),
-                    textColor: Colors.white,
-                  ),
-                ],
-              ),
-              const SizedBox(
-                height: 100,
-              ),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                crossAxisAlignment: CrossAxisAlignment.end,
-                children: [
-                  const Text(
-                    "Wallets",
-                    style: TextStyle(
-                      color: Colors.white,
-                      fontSize: 36,
-                      fontWeight: FontWeight.w600,
-                    ),
-                  ),
-                  Text(
-                    "View All",
-                    style: TextStyle(
-                      color: Colors.white.withOpacity(0.8),
-                      // withOpacity를 사용할때는 const 변수로 지정되어있으면 안됨 -> Opacity 값을 compile할 때 모르기 때문
-                      fontSize: 18,
-                    ),
-                  ),
-                ],
-              ),
-              const SizedBox(
-                height: 20,
-              ),
-              Container(
-                clipBehavior: Clip.hardEdge,
-                // clipBehavior는 어떤 아이템이 overflow가 되었을때,
-                // 카드와 같은 Container로 하여금 어떻게 동작하게끔 할건지 알려주는 거
-                decoration: BoxDecoration(
-                  color: const Color(0xFF1F2123),
-                  borderRadius: BorderRadius.circular(25),
-                ),
-                child: Padding(
-                  padding: const EdgeInsets.all(25),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          const Text(
-                            "Euro",
-                            style: TextStyle(
-                                color: Colors.white,
-                                fontSize: 32,
-                                fontWeight: FontWeight.w400),
-                          ),
-                          const SizedBox(
-                            height: 20,
-                          ),
-                          Row(
-                            children: [
-                              const Text(
-                                "6 428",
-                                style: TextStyle(
-                                  color: Colors.white,
-                                  fontSize: 20,
-                                ),
-                              ),
-                              const SizedBox(
-                                width: 5,
-                              ),
-                              Text(
-                                "EUR",
-                                style: TextStyle(
-                                  color: Colors.white.withOpacity(0.8),
-                                  fontSize: 20,
-                                ),
-                              ),
-                            ],
-                          ),
-                        ],
-                      ),
-                      Transform.scale(
-                        scale: 2.2,
-                        child: Transform.translate(
-                          // 좌표 이동 위젯
-                          offset: const Offset(-5, 12),
-                          child: const Icon(
-                            // 그냥 Icon만 사용하면 카드 안에 Icon이 위치하게 됨
-                            // 그러면 Icon크기에 따라 카드도 같이 커짐
-                            // 그래서 Transform.scale 위젯을 사용해서 아이콘 크기와 카드를 별도로 적용하게 하는 거
-                            Icons.euro_rounded,
+                Row(
+                  // 첫번째 Row
+                  mainAxisAlignment: MainAxisAlignment.end,
+                  // Row에서의 mainAxis는 수직방향에서의 정렬 -> start는 왼쪽 끝, end는 오른쪽 끝
+                  children: [
+                    // Row도 children을 가짐
+                    Column(
+                      crossAxisAlignment: CrossAxisAlignment.end,
+                      // Column에서의 crossAxis는 수직방향에서의 정렬 = Row에서의 mainAxis -> 반대개념
+                      children: [
+                        const Text(
+                          "Hey, Selena",
+                          style: TextStyle(
                             color: Colors.white,
-                            size: 88,
+                            fontSize: 28,
+                            fontWeight: FontWeight.w800,
                           ),
                         ),
-                      )
-                    ],
+                        Text(
+                          "Welcome back",
+                          style: TextStyle(
+                            color: Colors.white.withOpacity(0.8),
+                            fontSize: 18,
+                          ),
+                        ),
+                      ],
+                    )
+                  ],
+                ),
+                const SizedBox(
+                  height: 70,
+                ),
+                Text(
+                  "Total Balance",
+                  style: TextStyle(
+                    fontSize: 22,
+                    color: Colors.white.withOpacity(0.8),
                   ),
                 ),
-              ),
-            ],
+                const SizedBox(
+                  height: 5,
+                ),
+                const Text(
+                  "\$5 194 482",
+                  style: TextStyle(
+                    fontSize: 48,
+                    fontWeight: FontWeight.w600,
+                    color: Colors.white,
+                  ),
+                ),
+                const SizedBox(
+                  height: 30,
+                ),
+                const Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Button(
+                        text: "Transfer",
+                        bgColor: Color(0xFFF2B33A),
+                        textColor: Colors.black),
+                    Button(
+                      text: "Request",
+                      bgColor: Color(0xFF1F2123),
+                      textColor: Colors.white,
+                    ),
+                  ],
+                ),
+                const SizedBox(
+                  height: 100,
+                ),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  crossAxisAlignment: CrossAxisAlignment.end,
+                  children: [
+                    const Text(
+                      "Wallets",
+                      style: TextStyle(
+                        color: Colors.white,
+                        fontSize: 36,
+                        fontWeight: FontWeight.w600,
+                      ),
+                    ),
+                    Text(
+                      "View All",
+                      style: TextStyle(
+                        color: Colors.white.withOpacity(0.8),
+                        // withOpacity를 사용할때는 const 변수로 지정되어있으면 안됨 -> Opacity 값을 compile할 때 모르기 때문
+                        fontSize: 18,
+                      ),
+                    ),
+                  ],
+                ),
+                const SizedBox(
+                  height: 20,
+                ),
+                const currency_card(
+                  name: "Euro",
+                  code: "EUR",
+                  amount: "6 428",
+                  icon: Icons.euro_rounded,
+                  isInverted: false,
+                ),
+                Transform.translate(
+                  offset: const Offset(0, -20),
+                  child: const currency_card(
+                    name: "Bitcoin",
+                    code: "BTC",
+                    amount: "9 785",
+                    icon: Icons.currency_bitcoin_rounded,
+                    isInverted: true,
+                  ),
+                ),
+                Transform.translate(
+                  offset: const Offset(0, -40),
+                  child: const currency_card(
+                    name: "Dollar",
+                    code: "USD",
+                    amount: "428",
+                    icon: Icons.attach_money_outlined,
+                    isInverted: false,
+                  ),
+                ),
+              ],
+            ),
           ),
         ),
       ),
