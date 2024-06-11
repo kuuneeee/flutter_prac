@@ -138,6 +138,9 @@ class App extends StatelessWidget {
                 height: 20,
               ),
               Container(
+                clipBehavior: Clip.hardEdge,
+                // clipBehavior는 어떤 아이템이 overflow가 되었을때,
+                // 카드와 같은 Container로 하여금 어떻게 동작하게끔 할건지 알려주는 거
                 decoration: BoxDecoration(
                   color: const Color(0xFF1F2123),
                   borderRadius: BorderRadius.circular(25),
@@ -145,6 +148,7 @@ class App extends StatelessWidget {
                 child: Padding(
                   padding: const EdgeInsets.all(25),
                   child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
                       Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
@@ -182,6 +186,21 @@ class App extends StatelessWidget {
                           ),
                         ],
                       ),
+                      Transform.scale(
+                        scale: 2.2,
+                        child: Transform.translate(
+                          // 좌표 이동 위젯
+                          offset: const Offset(-5, 12),
+                          child: const Icon(
+                            // 그냥 Icon만 사용하면 카드 안에 Icon이 위치하게 됨
+                            // 그러면 Icon크기에 따라 카드도 같이 커짐
+                            // 그래서 Transform.scale 위젯을 사용해서 아이콘 크기와 카드를 별도로 적용하게 하는 거
+                            Icons.euro_rounded,
+                            color: Colors.white,
+                            size: 88,
+                          ),
+                        ),
+                      )
                     ],
                   ),
                 ),
