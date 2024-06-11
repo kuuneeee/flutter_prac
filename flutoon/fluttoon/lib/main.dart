@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/painting.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter/widgets.dart';
+import 'package:fluttoon/widgets/button.dart';
 
 void main() {
   runApp(const App());
@@ -30,7 +31,9 @@ class App extends StatelessWidget {
         // 배경색 -> 0xFF 쓰고 컬러코드 or Color.fromARGB(Bright, R,G,B), Color.fromRGBO(R,G,B,Opacity)
         body: Padding(
           // 화면 테두리 부분에 padding
-          padding: const EdgeInsets.symmetric(horizontal: 40),
+          padding: const EdgeInsets.symmetric(
+            horizontal: 20,
+          ),
           // all은 상하좌우 모두에 패딩을 주는 거 / only는 상하좌우 선택한데만 패딩 주는거 / symmetric은 상하 또는 좌우에 동시에 패딩 주는거
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
@@ -92,45 +95,17 @@ class App extends StatelessWidget {
               const SizedBox(
                 height: 30,
               ),
-              Row(
+              const Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  Container(
-                    // HTML의 div 같은 거 -> child를 가지고 있는 단순한 box
-                    decoration: BoxDecoration(
-                      color: const Color(0xFFF2B33A),
-                      borderRadius: BorderRadius.circular(45),
-                    ),
-                    child: const Padding(
-                      padding: EdgeInsets.symmetric(
-                        vertical: 20,
-                        horizontal: 50,
-                      ),
-                      child: Text(
-                        "Transfer",
-                        style: TextStyle(
-                          // color: Colors.white,
-                          fontSize: 20,
-                        ),
-                      ),
-                    ),
-                  ),
-                  Container(
-                    decoration: BoxDecoration(
-                      color: Colors.grey,
-                      borderRadius: BorderRadius.circular(45),
-                    ),
-                    child: const Padding(
-                      padding: EdgeInsets.symmetric(
-                        vertical: 20,
-                        horizontal: 50,
-                      ),
-                      child: Text(
-                        'what?',
-                        style: TextStyle(
-                          fontSize: 20,
-                        ),
-                      ),
-                    ),
+                  Button(
+                      text: "Transfer",
+                      bgColor: Color(0xFFF2B33A),
+                      textColor: Colors.black),
+                  Button(
+                    text: "Request",
+                    bgColor: Color(0xFF1F2123),
+                    textColor: Colors.white,
                   ),
                 ],
               )
