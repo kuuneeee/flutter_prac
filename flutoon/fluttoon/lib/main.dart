@@ -28,51 +28,71 @@ class _AppState extends State<App> {
   // state의 데이터를 고치면 UI는 새로고침되면서 최신 데이터를 보여줌
   // StatefulWidget의 데이터는 단지 클래스 프로퍼티일 뿐 -> 단순한 Dart 클래스 프로퍼티
 
-  List<int> numbers = [];
+  // List<int> numbers = [];
 
-  void onClicked() {
-    // 버튼 클릭할 때 실행되는 함수
-    setState(() {
-      // State 클래스에게 데이터가 변경되었다고 알리는 함수
-      // setState는 기본적으로 이 메서드(onClicked)를 한번 더 호출 하는 거 -> 부분만 새로 업데이트하는 것도 되나??
-      // 이 안에다가 함수를 넣지 않아도 작동함 -> 메서드 안에 존재하기만 하면 됨
-      numbers.add(numbers.length);
-    });
-  }
+  // void onClicked() {
+  //   // 버튼 클릭할 때 실행되는 함수
+  //   setState(() {
+  //     // State 클래스에게 데이터가 변경되었다고 알리는 함수
+  //     // setState는 기본적으로 이 메서드(onClicked)를 한번 더 호출 하는 거 -> 부분만 새로 업데이트하는 것도 되나??
+  //     // 이 안에다가 함수를 넣지 않아도 작동함 -> 메서드 안에 존재하기만 하면 됨
+  //     numbers.add(numbers.length);
+  //   });
+  // }
 
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      home: Scaffold(
-        backgroundColor: const Color(0xFFF4EDDB),
+      theme: ThemeData(
+        // theme은 전체적인 앱의 테마를 정함
+        // 지금까지는 하나하나 색상, 크기 등을 정해줬지만 -> 여기서 한번에 적용할 수 있음
+        textTheme: const TextTheme(
+          titleLarge: TextStyle(
+            color: Colors.red,
+          ),
+        ),
+      ),
+      home: const Scaffold(
+        backgroundColor: Color(0xFFF4EDDB),
         // 배경색 -> 0xFF 쓰고 컬러코드 or Color.fromARGB(Bright, R,G,B), Color.fromRGBO(R,G,B,Opacity)
         body: Center(
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              const Text(
-                "Click Count",
-                style: TextStyle(
-                  fontSize: 30,
-                ),
-              ),
-              for (var n in numbers) // 리스트에서 collectionfor를 써서 이런 식으로 쓸수 있음
-                Text(
-                  '$n',
-                  style: const TextStyle(
-                    fontSize: 20,
-                  ),
-                ),
-              IconButton(
-                iconSize: 40,
-                onPressed: onClicked, // 클릭할 때마다 실행할 함수
-                icon: const Icon(
-                  Icons.add_box_rounded,
-                ), // 아이콘 모양
-              )
+              MyLargeTitle(),
+              // IconButton(
+              //   iconSize: 40,
+              //   onPressed: onClicked, // 클릭할 때마다 실행할 함수
+              //   icon: const Icon(
+              //     Icons.add_box_rounded,
+              //   ), // 아이콘 모양
+              // )
             ],
           ),
         ),
+      ),
+    );
+  }
+}
+
+class MyLargeTitle extends StatelessWidget {
+  const MyLargeTitle({
+    super.key,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    // App에서 정한 theme을 적용하려면 context를 사용해야 함
+    // 위젯 트리 상 App은 root고 MyLargeTitle는 엄청 밑에 child임
+    // context는 MyLargeTitle의 parent들의 모든 정보를 담고 있음
+
+    return Text(
+      "My Large Title",
+      style: TextStyle(
+        fontSize: 30,
+        color: Theme.of(context).textTheme.titleLarge?.color,
+        // The property 'color' can't be unconditionally accessed because the receiver can be 'null'. -> 테마로 정한 color가 null 값이 될 수 있으므로 에러
+        // Invalid constant value. -> const는 안된대 -> 삭제
       ),
     );
   }
