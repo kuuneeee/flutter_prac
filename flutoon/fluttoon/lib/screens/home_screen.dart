@@ -1,6 +1,5 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
+import 'dart:async';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
@@ -10,6 +9,25 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> {
+  int totalseconds = 1500;
+  late Timer timer;
+
+  void onTick(Timer timer) {
+    setState(() {
+      totalseconds = totalseconds - 1;
+    });
+  }
+
+  void onStartPressed() {
+    // Timer는 dart 기본 패키지
+    // Timer.periodic은 주기마다 함수를 실행하게끔
+    timer = Timer.periodic(
+      const Duration(seconds: 1), // 이 주기마다
+      onTick, // 이 함수를 실행
+      // The argument type 'void Function()' can't be assigned to the parameter type 'void Function(Timer)'.  -> Timer.periodic이 실행하는 함수는 그 인자로 Timer 자체를 받음
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -23,7 +41,7 @@ class _HomeScreenState extends State<HomeScreen> {
             child: Container(
               alignment: Alignment.bottomCenter,
               child: Text(
-                '25:00',
+                '$totalseconds',
                 style: TextStyle(
                   color: Theme.of(context).cardColor,
                   fontSize: 89,
@@ -37,7 +55,7 @@ class _HomeScreenState extends State<HomeScreen> {
             child: Container(
               child: Center(
                 child: IconButton(
-                  onPressed: () {}, // () {} 는 아무것도 안하는 함수
+                  onPressed: onStartPressed, // () {} 는 아무것도 안하는 함수
                   color: Theme.of(context).cardColor,
                   iconSize: 120,
                   icon: const Icon(
@@ -56,6 +74,10 @@ class _HomeScreenState extends State<HomeScreen> {
                   child: Container(
                     decoration: BoxDecoration(
                       color: Theme.of(context).cardColor,
+                      borderRadius: const BorderRadius.only(
+                        topLeft: Radius.circular(50),
+                        topRight: Radius.circular(50),
+                      ),
                     ),
                     child: Column(
                       mainAxisAlignment: MainAxisAlignment.center,
