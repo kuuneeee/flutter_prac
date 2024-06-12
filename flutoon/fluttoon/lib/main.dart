@@ -28,7 +28,7 @@ class _AppState extends State<App> {
   // state의 데이터를 고치면 UI는 새로고침되면서 최신 데이터를 보여줌
   // StatefulWidget의 데이터는 단지 클래스 프로퍼티일 뿐 -> 단순한 Dart 클래스 프로퍼티
 
-  int counter = 0;
+  List<int> numbers = [];
 
   void onClicked() {
     // 버튼 클릭할 때 실행되는 함수
@@ -36,7 +36,7 @@ class _AppState extends State<App> {
       // State 클래스에게 데이터가 변경되었다고 알리는 함수
       // setState는 기본적으로 이 메서드(onClicked)를 한번 더 호출 하는 거 -> 부분만 새로 업데이트하는 것도 되나??
       // 이 안에다가 함수를 넣지 않아도 작동함 -> 메서드 안에 존재하기만 하면 됨
-      counter = counter + 1;
+      numbers.add(numbers.length);
     });
   }
 
@@ -56,12 +56,13 @@ class _AppState extends State<App> {
                   fontSize: 30,
                 ),
               ),
-              Text(
-                "$counter",
-                style: const TextStyle(
-                  fontSize: 30,
+              for (var n in numbers) // 리스트에서 collectionfor를 써서 이런 식으로 쓸수 있음
+                Text(
+                  '$n',
+                  style: const TextStyle(
+                    fontSize: 20,
+                  ),
                 ),
-              ),
               IconButton(
                 iconSize: 40,
                 onPressed: onClicked, // 클릭할 때마다 실행할 함수
