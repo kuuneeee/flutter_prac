@@ -40,6 +40,14 @@ class _AppState extends State<App> {
   //   });
   // }
 
+  bool showTitle = true;
+
+  void toggleTitle() {
+    setState(() {
+      showTitle = !showTitle;
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
@@ -52,21 +60,21 @@ class _AppState extends State<App> {
           ),
         ),
       ),
-      home: const Scaffold(
-        backgroundColor: Color(0xFFF4EDDB),
+      home: Scaffold(
+        backgroundColor: const Color(0xFFF4EDDB),
         // 배경색 -> 0xFF 쓰고 컬러코드 or Color.fromARGB(Bright, R,G,B), Color.fromRGBO(R,G,B,Opacity)
         body: Center(
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              MyLargeTitle(),
-              // IconButton(
-              //   iconSize: 40,
-              //   onPressed: onClicked, // 클릭할 때마다 실행할 함수
-              //   icon: const Icon(
-              //     Icons.add_box_rounded,
-              //   ), // 아이콘 모양
-              // )
+              showTitle ? const MyLargeTitle() : const Text('Nothing'),
+              // MylargeTitle이라는 위젯이 위젯트리에서 삭제되거나 추가되어 실행되거나 할때 dispose 메서드가 실행됨
+              IconButton(
+                onPressed: toggleTitle,
+                icon: const Icon(
+                  Icons.remove_red_eye,
+                ),
+              ),
             ],
           ),
         ),
@@ -75,16 +83,46 @@ class _AppState extends State<App> {
   }
 }
 
-class MyLargeTitle extends StatelessWidget {
+class MyLargeTitle extends StatefulWidget {
   const MyLargeTitle({
     super.key,
   });
+
+  @override
+  State<MyLargeTitle> createState() => _MyLargeTitleState();
+}
+
+class _MyLargeTitleState extends State<MyLargeTitle> {
+  @override
+  void initState() {
+    // 상태(state)를 초기화하기 위한 메서드
+    // 보통은 프러퍼티를 그냥 초기화하면 됨
+    // 가끔 부모요소에 의존하는 데이터를 초기화해야 하는 경우가 있음 -> 데이터를 초기화하기 위해 context를 사용하게 될 것
+    // 종종 API에서 업데이트를 구독하고 싶을 때가 있을 것
+    // 이럴 때 사용
+
+    // 중요한 점은 initState가 항상 build 메서드보다 먼저 호출되어야 한다는 점
+    // 또, initState 메서드는 오직 단 한번만 호출됨
+    super.initState();
+    print("initState!");
+  }
+
+  @override
+  void dispose() {
+    // 위젯이 스크린에서 제거될 때 호출되는 메서드
+    // API 업데이트나 이벤트 리스터로부터 구독을 취소하거나 form의 리스너로부터 벗어나고 싶을 때 사용할 수 있음
+    // 즉, 무언가를 취소하는 거
+    super.dispose();
+    print('dispose!');
+  }
 
   @override
   Widget build(BuildContext context) {
     // App에서 정한 theme을 적용하려면 context를 사용해야 함
     // 위젯 트리 상 App은 root고 MyLargeTitle는 엄청 밑에 child임
     // context는 MyLargeTitle의 parent들의 모든 정보를 담고 있음
+
+    print('build!');
 
     return Text(
       "My Large Title",
