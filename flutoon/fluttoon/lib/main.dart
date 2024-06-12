@@ -1,10 +1,4 @@
-import 'dart:ui';
-
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/painting.dart';
-import 'package:flutter/rendering.dart';
-import 'package:flutter/widgets.dart';
 import 'package:fluttoon/widgets/button.dart';
 import 'package:fluttoon/widgets/currency_card.dart';
 
@@ -12,159 +6,70 @@ void main() {
   runApp(const App());
 }
 
-// flutter는 수많은 Widget으로 구성되어 있음
-// Widget은 레고 블럭 같은 개념 -> 레고 블럭 여러개를 사용해서 완성
-// Widget은 남들이 만든걸 사용할 수도 있고, 내가 직접 만들수도 있음
-// flutter widget 카탈로그 사이트에 가보면 여러 Widget을 볼 수 있음 -> 다 기억할 필요는 없고 찾아보면 됨
+// 지금까지는 stateless widget을 사용했음
+// stateless와 stateful은 state를 가지냐 아니냐임
+// 상태에 따라 변하게 될 데이터를 생각해보면 됨
+// stateless는 그저 UI를 보여주는 것이고, stateful은 변화하는 데이터를 반영해서 UI에 띄우는 거
 
-// class App인 상태에서는 단순히 클래스일뿐
-// 이걸 Widget으로 만들기 위해서는 flutter SDK에 있는 3개의 core Widget 중에 하나를 extend해야 함
-// 가장 기초적이고 쉬운 건 StatelessWidget
+// StatefullWidget은 두 파트로 이루어짐
+// 1. 상태가 없는 위젯 그 자체
+// 2. 위젯의 상태(state)로, 위젯에 들어갈 데이터와 UI를 넣는 부분
 
-class App extends StatelessWidget {
+class App extends StatefulWidget {
+  // 파트 1. 상태가 없는 위젯 그 자체
   const App({super.key});
+
+  @override
+  State<App> createState() => _AppState(); // state 하나를 가지고 있음
+}
+
+class _AppState extends State<App> {
+  // 파트 2. UI를 구축하는 곳
+  // state의 데이터를 고치면 UI는 새로고침되면서 최신 데이터를 보여줌
+  // StatefulWidget의 데이터는 단지 클래스 프로퍼티일 뿐 -> 단순한 Dart 클래스 프로퍼티
+
+  int counter = 0;
+
+  void onClicked() {
+    // 버튼 클릭할 때 실행되는 함수
+    setState(() {
+      // State 클래스에게 데이터가 변경되었다고 알리는 함수
+      // setState는 기본적으로 이 메서드(onClicked)를 한번 더 호출 하는 거 -> 부분만 새로 업데이트하는 것도 되나??
+      // 이 안에다가 함수를 넣지 않아도 작동함 -> 메서드 안에 존재하기만 하면 됨
+      counter = counter + 1;
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
       home: Scaffold(
-        backgroundColor: const Color(0xFF181818),
+        backgroundColor: const Color(0xFFF4EDDB),
         // 배경색 -> 0xFF 쓰고 컬러코드 or Color.fromARGB(Bright, R,G,B), Color.fromRGBO(R,G,B,Opacity)
-        body: SingleChildScrollView(
-          child: Padding(
-            // 화면 테두리 부분에 padding
-            padding: const EdgeInsets.symmetric(
-              horizontal: 20,
-            ),
-            // all은 상하좌우 모두에 패딩을 주는 거 / only는 상하좌우 선택한데만 패딩 주는거 / symmetric은 상하 또는 좌우에 동시에 패딩 주는거
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              // Column은 children이라는 List<Widget>를 받음(child가 아니라) -> Column 방향 배열, Row 방향 배열 배치를 위함
-              children: [
-                const SizedBox(
-                  height: 80,
+        body: Center(
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              const Text(
+                "Click Count",
+                style: TextStyle(
+                  fontSize: 30,
                 ),
-                Row(
-                  // 첫번째 Row
-                  mainAxisAlignment: MainAxisAlignment.end,
-                  // Row에서의 mainAxis는 수직방향에서의 정렬 -> start는 왼쪽 끝, end는 오른쪽 끝
-                  children: [
-                    // Row도 children을 가짐
-                    Column(
-                      crossAxisAlignment: CrossAxisAlignment.end,
-                      // Column에서의 crossAxis는 수직방향에서의 정렬 = Row에서의 mainAxis -> 반대개념
-                      children: [
-                        const Text(
-                          "Hey, Selena",
-                          style: TextStyle(
-                            color: Colors.white,
-                            fontSize: 28,
-                            fontWeight: FontWeight.w800,
-                          ),
-                        ),
-                        Text(
-                          "Welcome back",
-                          style: TextStyle(
-                            color: Colors.white.withOpacity(0.8),
-                            fontSize: 18,
-                          ),
-                        ),
-                      ],
-                    )
-                  ],
+              ),
+              Text(
+                "$counter",
+                style: const TextStyle(
+                  fontSize: 30,
                 ),
-                const SizedBox(
-                  height: 70,
-                ),
-                Text(
-                  "Total Balance",
-                  style: TextStyle(
-                    fontSize: 22,
-                    color: Colors.white.withOpacity(0.8),
-                  ),
-                ),
-                const SizedBox(
-                  height: 5,
-                ),
-                const Text(
-                  "\$5 194 482",
-                  style: TextStyle(
-                    fontSize: 48,
-                    fontWeight: FontWeight.w600,
-                    color: Colors.white,
-                  ),
-                ),
-                const SizedBox(
-                  height: 30,
-                ),
-                const Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Button(
-                        text: "Transfer",
-                        bgColor: Color(0xFFF2B33A),
-                        textColor: Colors.black),
-                    Button(
-                      text: "Request",
-                      bgColor: Color(0xFF1F2123),
-                      textColor: Colors.white,
-                    ),
-                  ],
-                ),
-                const SizedBox(
-                  height: 100,
-                ),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  crossAxisAlignment: CrossAxisAlignment.end,
-                  children: [
-                    const Text(
-                      "Wallets",
-                      style: TextStyle(
-                        color: Colors.white,
-                        fontSize: 36,
-                        fontWeight: FontWeight.w600,
-                      ),
-                    ),
-                    Text(
-                      "View All",
-                      style: TextStyle(
-                        color: Colors.white.withOpacity(0.8),
-                        // withOpacity를 사용할때는 const 변수로 지정되어있으면 안됨 -> Opacity 값을 compile할 때 모르기 때문
-                        fontSize: 18,
-                      ),
-                    ),
-                  ],
-                ),
-                const SizedBox(
-                  height: 20,
-                ),
-                const currency_card(
-                  name: "Euro",
-                  code: "EUR",
-                  amount: "6 428",
-                  icon: Icons.euro_rounded,
-                  isInverted: false,
-                  isOrder: 0,
-                ),
-                const currency_card(
-                  name: "Bitcoin",
-                  code: "BTC",
-                  amount: "9 785",
-                  icon: Icons.currency_bitcoin_outlined,
-                  isInverted: true,
-                  isOrder: 1,
-                ),
-                const currency_card(
-                  name: "Dollar",
-                  code: "USD",
-                  amount: "428",
-                  icon: Icons.attach_money_outlined,
-                  isInverted: false,
-                  isOrder: 2,
-                ),
-              ],
-            ),
+              ),
+              IconButton(
+                iconSize: 40,
+                onPressed: onClicked, // 클릭할 때마다 실행할 함수
+                icon: const Icon(
+                  Icons.add_box_rounded,
+                ), // 아이콘 모양
+              )
+            ],
           ),
         ),
       ),
