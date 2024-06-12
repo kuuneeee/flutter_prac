@@ -10,6 +10,7 @@ class HomeScreen extends StatefulWidget {
 
 class _HomeScreenState extends State<HomeScreen> {
   int totalseconds = 1500;
+  bool isRunning = false;
   late Timer timer;
 
   void onTick(Timer timer) {
@@ -26,6 +27,16 @@ class _HomeScreenState extends State<HomeScreen> {
       onTick, // 이 함수를 실행
       // The argument type 'void Function()' can't be assigned to the parameter type 'void Function(Timer)'.  -> Timer.periodic이 실행하는 함수는 그 인자로 Timer 자체를 받음
     );
+    setState(() {
+      isRunning = true;
+    });
+  }
+
+  void onPausePressd() {
+    timer.cancel();
+    setState(() {
+      isRunning = false;
+    });
   }
 
   @override
@@ -55,11 +66,15 @@ class _HomeScreenState extends State<HomeScreen> {
             child: Container(
               child: Center(
                 child: IconButton(
-                  onPressed: onStartPressed, // () {} 는 아무것도 안하는 함수
+                  onPressed: isRunning
+                      ? onPausePressd
+                      : onStartPressed, // () {} 는 아무것도 안하는 함수
                   color: Theme.of(context).cardColor,
                   iconSize: 120,
-                  icon: const Icon(
-                    Icons.play_circle_outline,
+                  icon: Icon(
+                    isRunning
+                        ? Icons.pause_circle_outline
+                        : Icons.play_circle_outline,
                   ),
                 ),
               ),
