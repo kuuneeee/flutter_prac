@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:fluttoon/widgets/daily_card_codechallenge.dart';
-import 'package:fluttoon/widgets/day_text_codechallenge.dart';
+import 'package:fluttoon/widgets/daily_card_codechallenge1.dart';
+import 'package:fluttoon/widgets/day_text_codechallenge1.dart';
 
 void main() {
   runApp(const App());
