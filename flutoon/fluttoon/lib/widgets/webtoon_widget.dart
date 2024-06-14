@@ -1,3 +1,4 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttoon/screens/detail_screen.dart';
 
@@ -54,23 +55,27 @@ class Webtoon extends StatelessWidget {
       },
       child: Column(
         children: [
-          Container(
-            width: 250,
-            clipBehavior: Clip.hardEdge,
-            // 그냥 decoration만 하면 적용안되는 경우가 있음 -> clipbehavior 때문 / clipbehavior는 자식의 부모 영역 침범을 제어하는 방법
-            decoration: BoxDecoration(
-              borderRadius: BorderRadius.circular(15),
-              boxShadow: [
-                // 리스트로 들어가야 함
-                BoxShadow(
-                  blurRadius: 15,
-                  offset: const Offset(10, 10),
-                  color: Colors.black.withOpacity(0.3),
-                ),
-              ],
-            ),
-            child: Image.network(
-              thumb,
+          Hero(
+            // Hero로 감싸고 같은 tag를 준 두 개의 위젯을 연결해서 페이지가 바뀔때 하나가 움직이는거처럼 만들수 있음
+            tag: id,
+            child: Container(
+              width: 250,
+              clipBehavior: Clip.hardEdge,
+              // 그냥 decoration만 하면 적용안되는 경우가 있음 -> clipbehavior 때문 / clipbehavior는 자식의 부모 영역 침범을 제어하는 방법
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(15),
+                boxShadow: [
+                  // 리스트로 들어가야 함
+                  BoxShadow(
+                    blurRadius: 15,
+                    offset: const Offset(10, 10),
+                    color: Colors.black.withOpacity(0.3),
+                  ),
+                ],
+              ),
+              child: Image.network(
+                thumb,
+              ),
             ),
           ),
           const SizedBox(
