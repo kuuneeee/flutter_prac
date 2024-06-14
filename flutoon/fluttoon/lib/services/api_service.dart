@@ -1,3 +1,6 @@
+import 'dart:convert';
+
+import 'package:fluttoon/models/webtoon_model.dart';
 import 'package:http/http.dart' as http;
 
 class ApiServie {
@@ -15,7 +18,8 @@ class ApiServie {
   // 입력된 url로 HTTP GET 리퀘스트를 보내는 함수임
   // get 함수는 Future 타입을 반환함 -> Future는 미래에 받을 값의 타입을 알려줌
 
-  void getTodaysToons() async {
+  Future<List<WebtoonModel>> getTodaysToons() async {
+    List<WebtoonModel> webtoonInstances = [];
     final url = Uri.parse('$baseurl$today');
     final response = await http.get(url);
 
@@ -31,11 +35,24 @@ class ApiServie {
 
     if (response.statusCode == 200) {
       // response의 statusCode가 200일때 -> 요청이 성공했을때
-      print(response.body);
+      // print(response.body);
       // response의 body를 출력 -> 서버가 보낸 데이터
-      return;
+
+      // 이제 서버에서 가져온 데이터들을 각각 클래스로 만들기 위해 Json으로 변환해줄 거 -> webtoon_model.dart
+      // response.bosy는 그냥 String
+
+      final List<dynamic> webtoons = jsonDecode(response.body);
+      // 이렇게 데이터를 Json으로 받아온 후에 Class에 활용해보자
+
+      for (var webtoon in webtoons) {
+        // print(webtoon);
+        final toon = WebtoonModel.fromJson(webtoon);
+        webtoonInstances.add(toon);
+      }
+
+      return webtoonInstances;
     }
-    // 그게 아니면,
+    // 요청 성공이 아니면,
     throw Error();
     // Error 던짐
   }
