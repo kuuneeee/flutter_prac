@@ -5,7 +5,7 @@ import 'package:fluttoon/services/api_service.dart';
 class HomeScreen extends StatelessWidget {
   HomeScreen({super.key}); // Future 타입이 있기 때문에 클래스가 const가 될 수 없음
 
-  Future<List<WebtoonModel>> webtoons = ApiService.getTodaysToons();
+  final Future<List<WebtoonModel>> webtoons = ApiService.getTodaysToons();
 
   @override
   Widget build(BuildContext context) {
@@ -37,9 +37,45 @@ class HomeScreen extends StatelessWidget {
           // snapshot.error -> 에러가 났는지
           // snapshot.connectionState -> 연결상태는 어떤지
           if (snapshot.hasData) {
-            return const Text("There is data!!");
+            // return ListView(
+            //   // 많은 양의 데이터를 연속적으로 보여주고 싶을때 Column이나 Row로는 힘듦 -> ListVew 사용
+            //   // 여러 항목을 나열하는데 최적화된 위젯 / 버전이 많음
+            //   children: [
+            //     for (var webtoon in snapshot.data!) Text(webtoon.title) // 간단한 예제 -> 이렇게 하면 데이터를 다 로딩함 (메모리 부족할 것)
+            //   ],
+            // );
+            // return ListView.builder(
+            //   scrollDirection: Axis.horizontal, // 스크롤 방향
+            //   itemCount: snapshot.data!.length, // dart가 몇개의 아이템을 빌드할지 지정
+            //   itemBuilder: (context, index) {
+            //     // FutureBuilder의 builder랑 유사하지만 index를 사용함
+            //     // 이 index로 어떤 아이템이 build되는지 알 수 있음
+            //     // ListView.builder는 사용자가 보고 있는 아이템만 build할 거 -> 안 보고 있는 것들은 메모리에서 삭제
+            //     var webtoon = snapshot.data![index];
+            //     print(index);
+            //     return Text(webtoon.title);
+            //   },
+            // );
+            return ListView.separated(
+              scrollDirection: Axis.horizontal, // 스크롤 방향
+              itemCount: snapshot.data!.length, // dart가 몇개의 아이템을 빌드할지 지정
+              itemBuilder: (context, index) {
+                // FutureBuilder의 builder랑 유사하지만 index를 사용함
+                // 이 index로 어떤 아이템이 build되는지 알 수 있음
+                // ListView.builder는 사용자가 보고 있는 아이템만 build할 거 -> 안 보고 있는 것들은 메모리에서 삭제
+                var webtoon = snapshot.data![index];
+                print(index);
+                return Text(webtoon.title);
+              },
+              separatorBuilder: (context, index) => const SizedBox(
+                // ListView.separated -> 아이템 간의 분할된 View를 보여줌
+                width: 20,
+              ),
+            );
           }
-          return const Text('Loading...');
+          return const Center(
+            child: CircularProgressIndicator(),
+          );
         },
       ),
     );
