@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:fluttoon/screens/home_screen.dart';
-import 'package:fluttoon/services/api_service.dart';
 
 void main() {
   runApp(const App());
@@ -12,7 +11,7 @@ class App extends StatelessWidget {
   // 위젯은 id 같은 key가 있다는 거 -> Flutter가 위젯을 빠르게 찾을 수 있게끔 함
   @override
   Widget build(BuildContext context) {
-    return const MaterialApp(
+    return MaterialApp(
       home: HomeScreen(),
     );
   }
