@@ -2,6 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:fluttoon/models/webtoon_detail_model.dart';
 import 'package:fluttoon/models/webtoon_episode_model.dart';
 import 'package:fluttoon/services/api_service.dart';
+import 'package:fluttoon/widgets/episode_widget.dart';
+import 'package:url_launcher/url_launcher.dart';
+import 'package:url_launcher/url_launcher_string.dart';
 
 class DetailScreen extends StatefulWidget {
   final String title, thumb, id;
@@ -125,48 +128,9 @@ class _DetailScreenState extends State<DetailScreen> {
                       // 렌더링 할게 적어서 Column으로 충분함 -> 훠어어얼씬 많으면 복잡하더라도 ListView 쓰는게 맞을듯
                       children: [
                         for (var episode in snapshot.data!)
-                          Container(
-                            margin: const EdgeInsets.only(
-                              bottom: 10,
-                            ),
-                            decoration: BoxDecoration(
-                              color: Colors.white,
-                              border: Border.all(
-                                color: Colors.green.shade500,
-                              ),
-                              borderRadius: BorderRadius.circular(20),
-                              boxShadow: [
-                                BoxShadow(
-                                  blurRadius: 3,
-                                  offset: const Offset(3, 3),
-                                  color: Colors.black.withOpacity(0.3),
-                                ),
-                              ],
-                            ),
-                            child: Padding(
-                              padding: const EdgeInsets.symmetric(
-                                vertical: 10,
-                                horizontal: 20,
-                              ),
-                              child: Row(
-                                mainAxisAlignment:
-                                    MainAxisAlignment.spaceBetween,
-                                children: [
-                                  Text(
-                                    episode.title,
-                                    style: const TextStyle(
-                                      color: Colors.green,
-                                      fontSize: 15,
-                                      fontWeight: FontWeight.w500,
-                                    ),
-                                  ),
-                                  const Icon(
-                                    Icons.chevron_right_rounded,
-                                    color: Colors.green,
-                                  ),
-                                ],
-                              ),
-                            ),
+                          Episode(
+                            episode: episode,
+                            webtoonId: widget.id,
                           )
                       ],
                     );
