@@ -1,6 +1,9 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 import 'package:fluttoon/models/webtoon_model.dart';
 import 'package:fluttoon/services/api_service.dart';
+import 'package:fluttoon/widgets/webtoon_widget.dart';
 
 class HomeScreen extends StatelessWidget {
   HomeScreen({super.key}); // Future 타입이 있기 때문에 클래스가 const가 될 수 없음
@@ -56,27 +59,50 @@ class HomeScreen extends StatelessWidget {
             //     return Text(webtoon.title);
             //   },
             // );
-            return ListView.separated(
-              scrollDirection: Axis.horizontal, // 스크롤 방향
-              itemCount: snapshot.data!.length, // dart가 몇개의 아이템을 빌드할지 지정
-              itemBuilder: (context, index) {
-                // FutureBuilder의 builder랑 유사하지만 index를 사용함
-                // 이 index로 어떤 아이템이 build되는지 알 수 있음
-                // ListView.builder는 사용자가 보고 있는 아이템만 build할 거 -> 안 보고 있는 것들은 메모리에서 삭제
-                var webtoon = snapshot.data![index];
-                print(index);
-                return Text(webtoon.title);
-              },
-              separatorBuilder: (context, index) => const SizedBox(
-                // ListView.separated -> 아이템 간의 분할된 View를 보여줌
-                width: 20,
-              ),
+            // return makeLIst(snapshot);
+            return Column(
+              children: [
+                const SizedBox(
+                  height: 50,
+                ),
+                Expanded(
+                  child: makeLIst(
+                      snapshot), // ListView는 높이가 없음 -> 무한한 높이값 -> 그래서 한정된 영역을 지정해줘야 함
+                  // Expanded 위젯은 Row나 Column의 child를 확장해서 그 child가 남는 공간을 채우게 함
+                ),
+              ],
             );
           }
           return const Center(
             child: CircularProgressIndicator(),
           );
         },
+      ),
+    );
+  }
+
+  ListView makeLIst(AsyncSnapshot<List<WebtoonModel>> snapshot) {
+    return ListView.separated(
+      padding: const EdgeInsets.symmetric(
+        vertical: 10,
+        horizontal: 20,
+      ),
+      scrollDirection: Axis.horizontal, // 스크롤 방향
+      itemCount: snapshot.data!.length, // dart가 몇개의 아이템을 빌드할지 지정
+      itemBuilder: (context, index) {
+        // FutureBuilder의 builder랑 유사하지만 index를 사용함
+        // 이 index로 어떤 아이템이 build되는지 알 수 있음
+        // ListView.builder는 사용자가 보고 있는 아이템만 build할 거 -> 안 보고 있는 것들은 메모리에서 삭제
+        var webtoon = snapshot.data![index];
+        return Webtoon(
+          title: webtoon.title,
+          thumb: webtoon.thumb,
+          id: webtoon.id,
+        );
+      },
+      separatorBuilder: (context, index) => const SizedBox(
+        // ListView.separated -> 아이템 간의 분할된 View를 보여줌
+        width: 40,
       ),
     );
   }
