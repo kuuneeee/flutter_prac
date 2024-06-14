@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:fluttoon/models/webtoon_detail_model.dart';
+import 'package:fluttoon/models/webtoon_episode_model.dart';
+import 'package:fluttoon/services/api_service.dart';
 
-class DetailScreen extends StatelessWidget {
+class DetailScreen extends StatefulWidget {
   final String title, thumb, id;
 
   const DetailScreen({
@@ -9,6 +12,27 @@ class DetailScreen extends StatelessWidget {
     required this.thumb,
     required this.id,
   });
+
+  @override
+  State<DetailScreen> createState() => _DetailScreenState();
+}
+
+class _DetailScreenState extends State<DetailScreen> {
+  // StatelessWidget에서 하면 안됨 -> webtoon이라는 프로퍼티를 정의할때 다른 프로퍼티인 id에 접근할 수 없기 때문
+  // 이걸 해결하려면 일단 DetailScreen을 StatefulWidget으로 변경해야함
+  // Future<WebtoonDetailModel> webtoon = ApiService.getToonById(
+  //     widget.id); // id 앞에 widget이 붙음 -> widget = 상위 위젯 (DetailScreen) / Stateful로 바꿨을때 refactoring 됨
+
+  late Future<WebtoonDetailModel> webtoon;
+  late Future<List<WebtoonEpisodeModel>> episodes;
+
+  @override
+  void initState() {
+    super.initState();
+    // constructor에서 선언하지 못하기 때문에 initState에서 선언함 / initState는 항상 build보다 먼저 실행되고 한번만 실행되기 때문에
+    webtoon = ApiService.getToonById(widget.id);
+    episodes = ApiService.getLatestEpisodesById(widget.id);
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -22,7 +46,7 @@ class DetailScreen extends StatelessWidget {
         // backgroundColor: Colors.red, // AppBar의 배경
         foregroundColor: Colors.green, // AppBar글자 색
         title: Text(
-          title,
+          widget.title,
           style: const TextStyle(
             fontSize: 24,
             fontWeight: FontWeight.w600,
@@ -38,7 +62,7 @@ class DetailScreen extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               Hero(
-                tag: id,
+                tag: widget.id,
                 child: Container(
                   width: 250,
                   clipBehavior: Clip.hardEdge,
@@ -53,7 +77,7 @@ class DetailScreen extends StatelessWidget {
                     ],
                   ),
                   child: Image.network(
-                    thumb,
+                    widget.thumb,
                   ),
                 ),
               ),
