@@ -3,9 +3,10 @@ import 'dart:convert';
 import 'package:fluttoon/models/webtoon_model.dart';
 import 'package:http/http.dart' as http;
 
-class ApiServie {
-  final String baseurl = "https://webtoon-crawler.nomadcoders.workers.dev/";
-  final String today = "today";
+class ApiService {
+  static const String baseurl =
+      "https://webtoon-crawler.nomadcoders.workers.dev/";
+  static const String today = "today";
 
   // URL에 요청을 보내기 위해서는 http 패키지가 필요함
   // Flutter나 Dart 패키지를 찾고 싶으면 pub.dev 사이트에서 찾으면 됨 -> 공식 패키지 보관소
@@ -18,7 +19,7 @@ class ApiServie {
   // 입력된 url로 HTTP GET 리퀘스트를 보내는 함수임
   // get 함수는 Future 타입을 반환함 -> Future는 미래에 받을 값의 타입을 알려줌
 
-  Future<List<WebtoonModel>> getTodaysToons() async {
+  static Future<List<WebtoonModel>> getTodaysToons() async {
     List<WebtoonModel> webtoonInstances = [];
     final url = Uri.parse('$baseurl$today');
     final response = await http.get(url);

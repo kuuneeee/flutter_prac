@@ -3,8 +3,6 @@ import 'package:fluttoon/screens/home_screen.dart';
 import 'package:fluttoon/services/api_service.dart';
 
 void main() {
-  ApiServie().getTodaysToons();
-
   runApp(const App());
 }
 
