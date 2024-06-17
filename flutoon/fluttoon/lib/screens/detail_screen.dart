@@ -3,6 +3,7 @@ import 'package:fluttoon/models/webtoon_detail_model.dart';
 import 'package:fluttoon/models/webtoon_episode_model.dart';
 import 'package:fluttoon/services/api_service.dart';
 import 'package:fluttoon/widgets/episode_widget.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:url_launcher/url_launcher_string.dart';
 
@@ -28,6 +29,26 @@ class _DetailScreenState extends State<DetailScreen> {
 
   late Future<WebtoonDetailModel> webtoon;
   late Future<List<WebtoonEpisodeModel>> episodes;
+  late SharedPreferences prefs;
+  bool isLiked = false;
+
+  Future initPrefs() async {
+    // 핸드폰 저장소에 선호 웹툰 데이터를 담을때 -> shared_preferences 패키지 사용
+    prefs = await SharedPreferences.getInstance(); // -> Instance를 호출하면 저장소와 연결됨
+    final likedToons = prefs.getStringList(
+        'likedToons'); // 저장소를 검색해서 like 버튼 누른 웹툰들을 불러올거 -> likedToons라는 key를 통해서
+    if (likedToons != null) {
+      // null이 아니면 리스트에 있는지 확인
+      if (likedToons.contains(widget.id) == true) {
+        isLiked = true;
+        setState(() {}); // initState에서 선언했더라도 refresh를 해줘야 함
+      }
+    } else {
+      // 사용자가 최초로 어플을 실행했을때는 버튼 누른게 없기 때문에 리스트가 아닐 수도 있음
+      // null이면 String list를 만들어 줄 거
+      await prefs.setStringList('likedToons', []);
+    }
+  }
 
   @override
   void initState() {
@@ -35,6 +56,22 @@ class _DetailScreenState extends State<DetailScreen> {
     // constructor에서 선언하지 못하기 때문에 initState에서 선언함 / initState는 항상 build보다 먼저 실행되고 한번만 실행되기 때문에
     webtoon = ApiService.getToonById(widget.id);
     episodes = ApiService.getLatestEpisodesById(widget.id);
+    initPrefs();
+  }
+
+  onHeartTap() async {
+    final likedToons = prefs.getStringList('likedToons');
+    if (likedToons != null) {
+      if (isLiked) {
+        likedToons.remove(widget.id);
+      } else {
+        likedToons.add(widget.id);
+      }
+      await prefs.setStringList('likedToons', likedToons);
+      setState(() {
+        isLiked = !isLiked;
+      });
+    }
   }
 
   @override
@@ -48,6 +85,14 @@ class _DetailScreenState extends State<DetailScreen> {
         shadowColor: Colors.black, // 그림자의 색
         // backgroundColor: Colors.red, // AppBar의 배경
         foregroundColor: Colors.green, // AppBar글자 색
+        actions: [
+          IconButton(
+            onPressed: onHeartTap,
+            icon: Icon(
+              isLiked ? Icons.favorite : Icons.favorite_outline,
+            ),
+          ),
+        ],
         title: Text(
           widget.title,
           style: const TextStyle(
